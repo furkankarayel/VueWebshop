@@ -1,10 +1,10 @@
 const Pool = require("pg").Pool;
 const connectionPool = new Pool({
-  host: "localhost",
+  host: "backend-postgres-1",
   user: "dbuser",
   database: "webshop",
   password: "postgres",
-  port: 5434,
+  port: 5432,
 });
 
 const getOrders = (request, response) => {
@@ -122,9 +122,7 @@ const createOrder = (request, response) => {
 // };
 
 module.exports = {
-  getArticles,
-  getArticleById,
-  createArticle,
-  updateArticle,
-  deleteArticle,
+  getOrders,
+  getOrderById,
+  createOrder,
 };

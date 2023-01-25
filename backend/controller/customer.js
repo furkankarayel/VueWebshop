@@ -1,10 +1,10 @@
 const Pool = require("pg").Pool;
 const connectionPool = new Pool({
-  host: "localhost",
+  host: "backend-postgres-1",
   user: "dbuser",
   database: "webshop",
   password: "postgres",
-  port: 5434,
+  port: 5432,
 });
 
 const getCustomers = (request, response) => {
