@@ -4,46 +4,64 @@
       <q-toolbar>
         <div class="q-pa-lg">
           <q-avatar
+            class="bg-white text-accent"
             rounded
             size="50px"
-            color="white"
-            text-color="black"
             icon="storefront"
           />
         </div>
 
-        <q-toolbar-title class="text-h4"> Vue Webshop </q-toolbar-title>
+        <q-toolbar-title class="text-h4">
+          <q-item to="/" class="text-secondary"> Vue Webshop </q-item>
+        </q-toolbar-title>
 
-        <q-btn dense rectangle size="18px" icon="shopping_cart" class="q-ml-md">
-          <q-badge color="red" floating>{{ itemsInCart }}</q-badge>
-        </q-btn>
+        <q-btn-group rounded class="q-mr-xl">
+          <q-btn
+            label="Register"
+            v-if="notLoggedIn"
+            to="/register"
+            flat
+            class="bg-accent"
+          />
+          <q-btn
+            label="Login"
+            v-if="notLoggedIn"
+            to="/login"
+            flat
+            class="bg-accent"
+          />
+        </q-btn-group>
+
         <q-btn
+          v-if="!notLoggedIn"
+          class="q-ml-md bg-secondary text-white"
           dense
           rectangle
           size="18px"
           icon="settings"
-          class="q-ml-md"
         ></q-btn>
+
+        <q-btn
+          class="q-ml-md bg-white text-accent"
+          dense
+          rectangle
+          to="/cart"
+          size="18px"
+          icon="shopping_cart"
+        >
+          <q-badge color="red" floating>{{ itemsInCart }}</q-badge></q-btn
+        >
       </q-toolbar>
     </q-header>
 
     <q-page-container>
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-
-// const linksList = [
-//   {
-//     title: "Docs",
-//     caption: "quasar.dev",
-//     icon: "school",
-//     link: "https://quasar.dev",
-//   },
-// ];
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "MainLayout",
@@ -52,18 +70,8 @@ export default defineComponent({
   data() {
     return {
       itemsInCart: 0,
+      notLoggedIn: true,
     };
-  },
-
-  setup() {
-    // const leftDrawerOpen = ref(false);
-    // return {
-    //   essentialLinks: linksList,
-    //   leftDrawerOpen,
-    //   toggleLeftDrawer() {
-    //     leftDrawerOpen.value = !leftDrawerOpen.value;
-    //   },
-    // };
   },
 });
 </script>

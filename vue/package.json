@@ -1,6 +1,6 @@
 {
   "name": "webshop",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": " A webshop project based on Vue.js in the lecture web applications at the Ravensburg Weingarten University in Germany.",
   "productName": "Vue Webshop",
   "author": "Furkan Karayel",

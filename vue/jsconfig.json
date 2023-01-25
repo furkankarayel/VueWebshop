@@ -18,7 +18,8 @@
         "src/pages/*"
       ],
       "assets/*": [
-        "src/assets/*"
+        "src/assets/*",
+        "src/assets/images/*"
       ],
       "boot/*": [
         "src/boot/*"

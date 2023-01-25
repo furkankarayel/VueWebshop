@@ -1,17 +1,35 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
-  </q-page>
+  <q-page-container>
+    <home-product-card :products="products" />
+  </q-page-container>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import axios from "axios";
 
-export default defineComponent({
-  name: 'IndexPage'
-})
+import HomeProductCard from "../components/HomeProductCard.vue";
+export default {
+  components: { HomeProductCard },
+  data() {
+    return {
+      products: {},
+    };
+  },
+  mounted() {
+    axios.get("http://localhost:8081/article/").then((response) => {
+      this.products = response.data;
+    });
+  },
+  methods: {
+    showShop() {
+      // navigate to shop page
+    },
+    showCart() {
+      // navigate to cart page
+    },
+    addToCart(product) {
+      // add product to cart
+    },
+  },
+};
 </script>
