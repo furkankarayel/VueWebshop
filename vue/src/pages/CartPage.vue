@@ -1,7 +1,11 @@
 <template>
   <q-page class="q-pa-lg">
-    LOL
-    <q-table :data="cartItems" :columns="columns" />
+    <q-table
+      title="Warenkorb"
+      :rows="cartItems"
+      :columns="columns"
+      hide-bottom
+    />
     <div class="text-right q-pt-lg">
       Total: {{ store.getCounter }}
       <q-btn label="Proceed to Checkout" color="primary" />
@@ -10,11 +14,11 @@
 </template>
 
 <script>
-import { useCounterStore } from "../stores/example-store";
+import { useShoppingCartStore } from "../stores/shoppingcart-store";
 export default {
   data() {
     return {
-      cartItems: [{ product: "Lenovo", quantity: "3", price: "300" }],
+      cartItems: [],
       totalCost: 0,
       columns: [
         { name: "Product", field: "product" },
@@ -24,10 +28,23 @@ export default {
     };
   },
   setup() {
-    // Fetch cart items and calculate total cost
-    const store = useCounterStore();
-    store.increment();
-    return { store };
+    const store = useShoppingCartStore();
+    return {
+      store,
+      addToCart: store.addToCart,
+      removeFromCart: store.removeFromCart,
+      clearCart: store.clearCart,
+    };
+  },
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      this.addToCart({ product: "No man", quantity: 3, price: 400 });
+      this.addToCart({ product: "YES man", quantity: 3, price: 400 });
+      this.cartItems = this.store.getCartItems;
+    },
   },
 };
 </script>
