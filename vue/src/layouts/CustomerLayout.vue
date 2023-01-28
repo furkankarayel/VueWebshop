@@ -49,7 +49,7 @@
           size="18px"
           icon="shopping_cart"
         >
-          <q-badge color="red" floating>{{ itemsInCart }}</q-badge></q-btn
+          <q-badge color="red" floating>{{ getAmount }}</q-badge></q-btn
         >
       </q-toolbar>
     </q-header>
@@ -62,15 +62,21 @@
 
 <script>
 import { defineComponent } from "vue";
-
+import { useShoppingCartStore } from "../stores/shoppingcart-store";
+import { computed } from "vue";
 export default defineComponent({
   name: "MainLayout",
 
   components: {},
   data() {
     return {
-      itemsInCart: 0,
       notLoggedIn: true,
+    };
+  },
+  setup() {
+    const store = useShoppingCartStore();
+    return {
+      getAmount: computed(() => store.getAmount),
     };
   },
 });

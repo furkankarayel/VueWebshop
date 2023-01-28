@@ -28,11 +28,36 @@
 
 <script>
 import { defineComponent } from "vue";
-
+import { useShoppingCartStore } from "../stores/shoppingcart-store";
+import { MutationType } from "pinia";
+import { computed } from "vue";
 export default defineComponent({
   name: "HomeProductCard",
   props: {
     products: {},
+  },
+  setup() {
+    const store = useShoppingCartStore();
+
+    store.$subscribe((mutation, state) => {
+      console.log(mutation); // Info über den Inhalt und der Art der Mutation
+
+      localStorage.setItem("cart", JSON.stringify(state)); //Persistente Daten
+    });
+    return {
+      addToStore: store.addToCart,
+    };
+  },
+  methods: {
+    addToCart(product) {
+      this.addToStore({
+        id: product.id,
+        img: product.img,
+        name: product.name,
+        quantity: 1,
+        price: product.price,
+      });
+    },
   },
 });
 </script>
