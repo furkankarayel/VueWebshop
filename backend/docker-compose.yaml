@@ -14,17 +14,13 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
       # copy the sql script to create tables
       - ./db/webshop.sql:/docker-entrypoint-initdb.d/webshop.sql
-    networks:
-      - mynetwork
+
   node:
     image: node:alpine
     platform: linux/arm64
     restart: always
     command:
       - npm start
-      # - apt-get update && apt-get install -y nodejs
-      # - apt-get update && apt-get install -y python3
-      - npm install --silent
       - node server.js
     working_dir: /app
     logging:
@@ -40,8 +36,3 @@ services:
     entrypoint: ["/bin/sh", "-c"]
     depends_on:
       - postgres
-    networks:
-      - mynetwork
-networks:
-  mynetwork:
-    driver: bridge

@@ -7,6 +7,27 @@ const connectionPool = new Pool({
   port: 5432,
 });
 
+const loginCustomer = (request, response) => {
+  const { email, password } = request.body;
+  connectionPool.query(
+    "SELECT * FROM customer WHERE email = $1",
+    [email],
+    (error, results) => {
+      if (error) {
+        response.status(500).send(`An error has occurred.`);
+        throw error;
+      }
+
+      if (password === results.rows[0].password) {
+        response.status(200).json(results.rows);
+      } else {
+        response.status(400).send(`Wrong password.`);
+        throw error;
+      }
+    }
+  );
+};
+
 const getCustomers = (request, response) => {
   connectionPool.query(
     "SELECT * FROM customer ORDER BY id ASC",
@@ -88,6 +109,7 @@ const deleteCustomer = (request, response) => {
 };
 
 module.exports = {
+  loginCustomer,
   getCustomers,
   getCustomerById,
   createCustomer,

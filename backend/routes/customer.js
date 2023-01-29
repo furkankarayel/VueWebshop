@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const customerController = require("../controller/customer");
 
+// POST login customer
+router.post("/login", customerController.loginCustomer);
+
 // GET returns all customers
 router.get("/customer", customerController.getCustomers);
 
