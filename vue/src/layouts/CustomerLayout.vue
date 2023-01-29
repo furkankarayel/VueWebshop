@@ -32,7 +32,7 @@
           />
         </q-btn-group>
 
-        Welcome {{ getCustomer }}!
+        <div v-if="!notLoggedIn">Welcome {{ getCustomer }}!</div>
         <q-btn
           v-if="!notLoggedIn"
           class="q-ml-md bg-secondary text-accent"

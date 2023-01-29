@@ -10,7 +10,7 @@
       "
     >
       <q-table
-        title="Warenkorb"
+        title="Shopping Cart"
         :rows="getCartItems"
         :columns="columns"
         no-data-label="There are no articles in your shopping cart. Go shopping!"
