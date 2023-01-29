@@ -32,9 +32,10 @@
           />
         </q-btn-group>
 
+        Welcome {{ getCustomer }}!
         <q-btn
           v-if="!notLoggedIn"
-          class="q-ml-md bg-secondary text-white"
+          class="q-ml-md bg-secondary text-accent"
           dense
           rectangle
           size="18px"
@@ -64,19 +65,22 @@
 import { defineComponent } from "vue";
 import { useShoppingCartStore } from "../stores/shoppingcart-store";
 import { computed } from "vue";
+import { useSessionStore } from "../stores/session-store";
 export default defineComponent({
   name: "MainLayout",
 
   components: {},
   data() {
-    return {
-      notLoggedIn: true,
-    };
+    return {};
   },
   setup() {
-    const store = useShoppingCartStore();
+    const shoppingCartStore = useShoppingCartStore();
+    const sessionStore = useSessionStore();
     return {
-      getAmount: computed(() => store.getAmount),
+      getAmount: computed(() => shoppingCartStore.getAmount),
+      getCustomer: computed(() => sessionStore.getCustomer),
+      getRoleId: computed(() => sessionStore.getRoleId),
+      notLoggedIn: computed(() => sessionStore.getLoginStatus),
     };
   },
 });

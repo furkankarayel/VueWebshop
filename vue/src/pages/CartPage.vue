@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { useQuasar } from "quasar";
 import { useShoppingCartStore } from "../stores/shoppingcart-store";
 import { computed } from "vue";
 export default {
@@ -65,6 +66,7 @@ export default {
     };
   },
   setup() {
+    const $q = useQuasar();
     const store = useShoppingCartStore();
 
     store.$subscribe((mutation, state) => {
@@ -77,11 +79,17 @@ export default {
       getAmount: computed(() => store.getAmount),
       removeFromCart: store.removeFromCart,
       clearCart: store.clearCart,
+      showNotify() {
+        $q.notify({
+          message: "This functionality has not been implemented yet!",
+          color: "red",
+        });
+      },
     };
   },
   methods: {
     checkSession() {
-      console.log("yes");
+      this.showNotify();
     },
   },
 };
