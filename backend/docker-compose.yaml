@@ -1,0 +1,40 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:10.0-alpine
+    restart: always
+    environment:
+      DB_HOST: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-dbuser}
+      POSTGRES_DB: ${POSTGRES_DB:-webshop}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./dummy_data_gen.js:/app/dummy_data_gen.js
+      # copy the sql script to create tables
+      - ./db/webshop.sql:/docker-entrypoint-initdb.d/webshop.sql
+
+  node:
+    image: node:10.0-alpine
+    platform: linux/arm64
+    restart: always
+    command:
+      - npm start
+      - apk update && apk add python3
+      - npm install --silent
+    working_dir: /app
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - "8081:8081"
+    volumes:
+      - .:/app
+      - ./routes/:/app/routes
+      - ./controller/:/app/controller
+    entrypoint: ["/bin/sh", "-c"]
+    depends_on:
+      - postgres
