@@ -9,7 +9,7 @@ const connectionPool = new Pool({
 
 const getOrders = (request, response) => {
   connectionPool.query(
-    "SELECT * FROM order ORDER BY id ASC",
+    "SELECT * FROM orderItem ORDER BY id ASC",
     (error, results) => {
       if (error) {
         response.status(500).send(`An error has occurred.`);
@@ -24,7 +24,7 @@ const getOrderById = (request, response) => {
   const id = parseInt(request.params.id);
 
   connectionPool.query(
-    "SELECT * FROM cart_order WHERE id = $1 RETURNING *",
+    "SELECT * FROM order WHERE id = $1 RETURNING *",
     [id],
     (error, results) => {
       if (error) {

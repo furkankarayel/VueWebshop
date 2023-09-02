@@ -12,16 +12,18 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+      - ./dummy_data_gen.js:/app/dummy_data_gen.js
       # copy the sql script to create tables
       - ./db/webshop.sql:/docker-entrypoint-initdb.d/webshop.sql
 
   node:
-    image: node:alpine
+    image: node:10.0-alpine
     platform: linux/arm64
     restart: always
     command:
       - npm start
-      - node server.js
+      - apk update && apk add python3
+      - npm install --silent
     working_dir: /app
     logging:
       options:
