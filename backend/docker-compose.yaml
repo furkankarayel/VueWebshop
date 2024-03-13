@@ -25,10 +25,6 @@ services:
       - apk update && apk add python3
       - npm install --silent
     working_dir: /app
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
     ports:
       - "8081:8081"
     volumes:
