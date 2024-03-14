@@ -2,7 +2,6 @@
 .thumbs.db
 package-lock.json
 node_modules
-db
 postgres-data
 
 

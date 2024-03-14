@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  postgres:
+    build:
+      context: ./backend/db/
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_DB=webshop
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./backend/postgres-data:/var/lib/postgresql/data
+
+  node:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
