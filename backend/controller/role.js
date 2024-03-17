@@ -1,14 +1,8 @@
-const Pool = require("pg").Pool;
-const connectionPool = new Pool({
-  host: "backend-postgres-1",
-  user: "dbuser",
-  database: "webshop",
-  password: "postgres",
-  port: 5432,
-});
+const pg_conn = require('../util/pg_conn')
+
 
 const getRoles = (request, response) => {
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM role ORDER BY id ASC",
     (error, results) => {
       if (error) {
@@ -23,7 +17,7 @@ const getRoles = (request, response) => {
 const getRoleById = (request, response) => {
   const id = parseInt(request.params.id);
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM role WHERE id = $1",
     [id],
     (error, results) => {
@@ -39,7 +33,7 @@ const getRoleById = (request, response) => {
 const createRole = (request, response) => {
   const { name } = request.body;
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "INSERT INTO role (name) VALUES ($1) RETURNING id",
     [name],
     (error, results) => {
@@ -56,7 +50,7 @@ const updateRole = (request, response) => {
   const id = parseInt(request.params.id);
   const { name } = request.body;
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "UPDATE role SET name = $2 WHERE id = $1 RETURNING id",
     [id, name],
     (error, results) => {
@@ -72,7 +66,7 @@ const updateRole = (request, response) => {
 const deleteRole = (request, response) => {
   const id = parseInt(request.params.id);
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "DELETE FROM role WHERE id = $1 RETURNING id",
     [id],
     (error, results) => {

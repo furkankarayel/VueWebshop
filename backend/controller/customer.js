@@ -1,15 +1,8 @@
-const Pool = require("pg").Pool;
-const connectionPool = new Pool({
-  host: "backend-postgres-1",
-  user: "dbuser",
-  database: "webshop",
-  password: "postgres",
-  port: 5432,
-});
+const pg_conn = require('../util/pg_conn')
 
 const loginCustomer = (request, response) => {
   const { email, password } = request.body;
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM customer WHERE email = $1",
     [email],
     (error, results) => {
@@ -29,7 +22,7 @@ const loginCustomer = (request, response) => {
 };
 
 const getCustomers = (request, response) => {
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM customer ORDER BY id ASC",
     (error, results) => {
       if (error) {
@@ -44,7 +37,7 @@ const getCustomers = (request, response) => {
 const getCustomerById = (request, response) => {
   const id = parseInt(request.params.id);
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM customer WHERE id = $1",
     [id],
     (error, results) => {
@@ -60,7 +53,7 @@ const getCustomerById = (request, response) => {
 const createCustomer = (request, response) => {
   const { name, email, password, role_id } = request.body;
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "INSERT INTO customer (name, email, password, role_id) VALUES ($1, $2, $3, $4) RETURNING id",
     [name, email, password, role_id],
     (error, results) => {
@@ -79,7 +72,7 @@ const updateCustomer = (request, response) => {
   const id = parseInt(request.params.id);
   const { name, email, password, role_id } = request.body;
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "UPDATE customer SET name = $2, email = $3, password = $3, role_id = $4 WHERE id = $1 RETURNING id",
     [id, name, email, password, role_id],
     (error, results) => {
@@ -95,7 +88,7 @@ const updateCustomer = (request, response) => {
 const deleteCustomer = (request, response) => {
   const id = parseInt(request.params.id);
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "DELETE FROM customer WHERE id = $1 RETURNING id",
     [id],
     (error, results) => {

@@ -4,12 +4,12 @@ const categoryRouter = require("./routes/category");
 const roleRouter = require("./routes/role");
 const customerRouter = require("./routes/customer");
 
-const express = require("express");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 const app = express();
-const port = 8081;
+const port = process.env.BACKEND_PORT || 8081;
 
 // logger lib for requests
 app.use(morgan("dev"));

@@ -12,8 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - ./backend/postgres-data:/var/lib/postgresql/data
-
   node:
+    container_name: backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -22,3 +22,11 @@ services:
       - "8081:8081"
     depends_on:
       - postgres
+  vue:
+    build:
+      context: ./vue
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - node

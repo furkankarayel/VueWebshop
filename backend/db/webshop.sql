@@ -42,5 +42,26 @@ create table article(
 	  references articlegroup(id)
 );
 
+create table article(
+   id               int       primary key       not null,
+   name             text                        not null,
+   ean              text                        not null,
+   description      char(100)                   not null,
+   articlegroup_id  int                         not null,
+   constraint fk_articlegroup
+      foreign key(articlegroup_id) 
+	  references articlegroup(id)
+);
+
+create table article(
+   id               int       primary key       not null,
+   name             text                        not null,
+   ean              text                        not null,
+   description      char(100)                   not null,
+   articlegroup_id  int                         not null,
+   constraint fk_articlegroup
+      foreign key(articlegroup_id) 
+	  references articlegroup(id)
+);
 
 

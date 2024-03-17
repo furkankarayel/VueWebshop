@@ -1,20 +1,21 @@
-const express = require("express");
-const router = express.Router();
+const express = require('express');
+const articleGroupRouter = express.Router();
 const articleGroupController = require("../controller/articlegroup");
 
 // GET returns all article groups
-router.get("/articlegroup", articleGroupController.getArticleGroups);
+articleGroupRouter.get("/articlegroup", articleGroupController.getArticleGroups);
 
 // GET gets specific article group
-router.get("/articlegroup/:id", articleGroupController.getArticleGroupById);
+articleGroupRouter.get("/articlegroup/:id", articleGroupController.getArticleGroupById);
 
 //POST create new article group
-router.post("/articlegroup", articleGroupController.createArticleGroup);
+articleGroupRouter.post("/articlegroup", articleGroupController.createArticleGroup);
 
 // PUT updates specific article group
-router.put("/articlegroup/:id", articleGroupController.updateArticleGroup);
+articleGroupRouter.put("/articlegroup/:id", articleGroupController.updateArticleGroup);
 
 // DELETE deletes specific article group
-router.delete("/articlegroup/:id", articleGroupController.deleteArticleGroup);
+articleGroupRouter.delete("/articlegroup/:id", articleGroupController.deleteArticleGroup);
 
-module.exports = router;
+module.exports = articleGroupRouter;
+

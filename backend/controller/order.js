@@ -1,14 +1,7 @@
-const Pool = require("pg").Pool;
-const connectionPool = new Pool({
-  host: "backend-postgres-1",
-  user: "dbuser",
-  database: "webshop",
-  password: "postgres",
-  port: 5432,
-});
+const pg_conn = require('../util/pg_conn')
 
 const getOrders = (request, response) => {
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM order ORDER BY id ASC",
     (error, results) => {
       if (error) {
@@ -23,7 +16,7 @@ const getOrders = (request, response) => {
 const getOrderById = (request, response) => {
   const id = parseInt(request.params.id);
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM cart_order WHERE id = $1 RETURNING *",
     [id],
     (error, results) => {
@@ -39,7 +32,7 @@ const getOrderById = (request, response) => {
 const getOrderItemsByOrderId = (request, response) => {
   const id = parseInt(request.params.order_id);
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM order_item WHERE order_id = $1 RETURNING *",
     [id],
     (error, results) => {
@@ -55,9 +48,8 @@ const getOrderItemsByOrderId = (request, response) => {
 const createOrder = (request, response) => {
   const { customer_id, articles } = request.body;
   var order_id;
-  connectionPool.query(
-    `INSERT INTO order (customer_id, create_date) VALUES ($1, to_timestamp(${
-      Date.now() / 1000
+  pg_conn.pool.query(
+    `INSERT INTO order (customer_id, create_date) VALUES ($1, to_timestamp(${Date.now() / 1000
     }))  RETURNING id`,
     [customer_id],
     (error, results) => {
@@ -69,7 +61,7 @@ const createOrder = (request, response) => {
     }
   );
   articles.forEach((article) => {
-    connectionPool.query(
+    pg_conn.pool.query(
       `INSERT INTO order_item (order_id, article_id) VALUES (${order_id}, ${article.id}  RETURNING id`,
       (error, results) => {
         if (error) {
@@ -92,7 +84,7 @@ const createOrder = (request, response) => {
 //   const id = parseInt(request.params.id);
 //   const { name, description, ean, articlegroup_id } = request.body;
 
-//   connectionPool.query(
+//   pg_conn.pool.query(
 //     "UPDATE article SET name = $2, description = $3, ean = $4, articlegroup_id = $5 WHERE id = $1 RETURNING id",
 //     [id, name, description, ean, articlegroup_id],
 //     (error, results) => {
@@ -108,7 +100,7 @@ const createOrder = (request, response) => {
 // const deleteArticle = (request, response) => {
 //   const id = parseInt(request.params.id);
 
-//   connectionPool.query(
+//   pg_conn.pool.query(
 //     "DELETE FROM article WHERE id = $1 RETURNING id",
 //     [id],
 //     (error, results) => {
@@ -124,5 +116,6 @@ const createOrder = (request, response) => {
 module.exports = {
   getOrders,
   getOrderById,
+  getOrderItemsByOrderId,
   createOrder,
 };

@@ -1,14 +1,7 @@
-const Pool = require("pg").Pool;
-const connectionPool = new Pool({
-  host: "backend-postgres-1",
-  user: "dbuser",
-  database: "webshop",
-  password: "postgres",
-  port: 5432,
-});
+const pg_conn = require('../util/pg_conn')
 
 const getArticles = (request, response) => {
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM article ORDER BY id ASC",
     (error, results) => {
       if (error) {
@@ -23,7 +16,7 @@ const getArticles = (request, response) => {
 const getArticleById = (request, response) => {
   const id = parseInt(request.params.id);
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "SELECT * FROM article WHERE id = $1 RETURNING *",
     [id],
     (error, results) => {
@@ -39,7 +32,7 @@ const getArticleById = (request, response) => {
 const createArticle = (request, response) => {
   const { name, description, img, ean, price, articlegroup_id } = request.body;
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "INSERT INTO article (name, description, img, ean, price, articlegroup_id) VALUES ($1, $2, $3, $4 $5, $6)  RETURNING id",
     [name, description, img, ean, price, articlegroup_id],
     (error, results) => {
@@ -56,7 +49,7 @@ const updateArticle = (request, response) => {
   const id = parseInt(request.params.id);
   const { name, description, img, ean, price, articlegroup_id } = request.body;
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "UPDATE article SET name = $2, description = $3, img=$4, ean = $5, price = $6, articlegroup_id = $7 WHERE id = $1 RETURNING id",
     [id, name, description, img, ean, price, articlegroup_id],
     (error, results) => {
@@ -72,7 +65,7 @@ const updateArticle = (request, response) => {
 const deleteArticle = (request, response) => {
   const id = parseInt(request.params.id);
 
-  connectionPool.query(
+  pg_conn.pool.query(
     "DELETE FROM article WHERE id = $1 RETURNING id",
     [id],
     (error, results) => {
